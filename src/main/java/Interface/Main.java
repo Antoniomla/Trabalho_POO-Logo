@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package Interface;
 import excecao.MovimentoInvalidoException;
 import Logica.Robo;
@@ -9,10 +5,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
-/**
- *
- * @author Antônio Carlos
- */
 public class Main {
     
     private static int obterCoordenada(Scanner sc , String eixo){
