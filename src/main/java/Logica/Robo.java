@@ -34,14 +34,14 @@ public class Robo {
     
     public void setPosicaoX(int novaPosicaoX) throws MovimentoInvalidoException{
         if(novaPosicaoX < 0){
-            throw new MovimentoInvalidoException("Tentativa de Locomoção Inválida, pelo robô " + this.cor + "para X = " + novaPosicao + " ,(coordenada negativa!)");
+            throw new MovimentoInvalidoException("Tentativa de Locomoção Inválida, pelo robô " + this.cor + "para X = " + novaPosicaoX + " ,(coordenada negativa!)");
         }
         this.posicaoX = novaPosicaoX;
     }
     
     public void setPosicaoY(int novaPosicaoY) throws MovimentoInvalidoException{
         if(novaPosicaoY < 0){
-            throw new MovimentoInvalidoException("Tentativa de Locomoção Inválida, pelo robô "+ this.cor + "para Y = " + novaPosicao + " ,(coordenada negativa!)");
+            throw new MovimentoInvalidoException("Tentativa de Locomoção Inválida, pelo robô "+ this.cor + "para Y = " + novaPosicaoY + " ,(coordenada negativa!)");
         }
         this.posicaoY = novaPosicaoY;
     }
