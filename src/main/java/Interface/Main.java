@@ -19,7 +19,8 @@ public class Main {
             }catch(InputMismatchException e){
                 // verifica se o usuario vai digitar um inteiro
                 System.out.println("ERRO:Entrada Invalida.Digite um número inteiro.");
-                sc.nextInt();
+                sc.nextLine();  //sc.nextInt() vai fazer o programa tentar ler outro numero imediatamente
+                                //sc.nextLine() vai descartar a entrada errada
             }
         }
         return coord;
