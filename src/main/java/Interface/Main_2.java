@@ -84,6 +84,13 @@ public class Main_2 {
                 System.out.println("----------------------------");
                 System.err.println("Motivo: " + e.getMessage());
             }
+            
+            // Evita loop infinito
+            if (turnos > 100) {
+                System.out.println("\n⏹ Nenhum robô encontrou o alimento após 100 turnos.");
+                break;
+            }
+        }
         
          // Resultado final
         System.out.println("\n==========================================");
@@ -93,7 +100,6 @@ public class Main_2 {
         
         sc.close();
         
-        }
     }
 }
 
