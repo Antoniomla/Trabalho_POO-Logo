@@ -10,9 +10,14 @@ import excecao.MovimentoInvalidoException;
  * @author Antônio Carlos
  */
 public class Robo {
+    public static final int TAMANHO_AREA = 4;
+    
     private int posicaoX;
     private int posicaoY;
     private String cor;
+    
+    // Variável que armazena o código do último movimento VÁLIDO.
+    protected int ultimoMovimentoValido = 0; 
     
     public Robo(String cor){
         this.cor = cor;
@@ -32,78 +37,65 @@ public class Robo {
         return posicaoY;
     }
     
-    public void setPosicaoX(int novaPosicaoX) throws MovimentoInvalidoException{
-        if(novaPosicaoX < 0){
-            throw new MovimentoInvalidoException("Tentativa de Locomoção Inválida, pelo robô " + this.cor + "para X = " + novaPosicaoX + " ,(coordenada negativa!)");
-        }
-        this.posicaoX = novaPosicaoX;
+    // Método auxiliar para gerar um código de direção randômico (1 a 4)
+    public int gerarMovimentoRandomico() {
+        // Gera um número entre 1 e 4 (Up:1, Down:2, Right:3, Left:4)
+        return (int) (Math.random() * 4) + 1;
     }
     
-    public void setPosicaoY(int novaPosicaoY) throws MovimentoInvalidoException{
-        if(novaPosicaoY < 0){
-            throw new MovimentoInvalidoException("Tentativa de Locomoção Inválida, pelo robô "+ this.cor + "para Y = " + novaPosicaoY + " ,(coordenada negativa!)");
+    // Converte o código da direção para String (útil para logs na Main)
+    public String codigoParaDirecao(int codigoDirecao) {
+        switch(codigoDirecao) {
+            case 1: return "up";
+            case 2: return "down";
+            case 3: return "right";
+            case 4: return "left";
+            default: return "INVALIDO";
         }
-        this.posicaoY = novaPosicaoY;
     }
-    
-    public void mover(String direcao) throws MovimentoInvalidoException{
+
+    public void mover(int codigoDirecao) throws MovimentoInvalidoException{
         int novoX = this.posicaoX;
         int novoY = this.posicaoY;
         
-        switch(direcao.toLowerCase()){
-            case "up":
+        switch(codigoDirecao){
+            case 1: // up
                 novoY++;
                 break;
-            case "down":
+            case 2: // down
                 novoY--;
                 break;
-            case "right":
+            case 3: // right
                 novoX++;
                 break;
-            case "left":
+            case 4: // left
                 novoX--;
+                break;
             default:
-                System.out.println("Direção do movimento Inválida!");
-                return;
+                throw new MovimentoInvalidoException("Código de direção Inválido! (Use 1 a 4)");
         }
-        if(novoX < 0){
-            throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoX + ".");
+        
+        // Verificação dos limites da área (0 a 3)
+        // Se a nova posição for < 0 OU >= TAMANHO_AREA (4), lança exceção.
+        if(novoX < 0 || novoX >= TAMANHO_AREA){
+            throw new MovimentoInvalidoException("Movimento para X = " + novoX + " fora da área (0-" + (TAMANHO_AREA-1) + ").");
         }
-        if(novoY < 0){
-            throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoY + ".");
+        if(novoY < 0 || novoY >= TAMANHO_AREA){
+            throw new MovimentoInvalidoException("Movimento para Y = " + novoY + " fora da área (0-" + (TAMANHO_AREA-1) + ").");
         }
+        
+        // Se chegou aqui, o movimento é válido
         this.posicaoX = novoX;
         this.posicaoY = novoY;
-        System.out.println("Movimento '" + direcao + "' realizado. Robô " + this.cor + " na posição (" + this.posicaoX + ", " + this.posicaoY + ")");
+        this.ultimoMovimentoValido = codigoDirecao;
     }
     
-    public void mover(int codigoDirecao) throws MovimentoInvalidoException{
-            String direcao = "";
-            switch(codigoDirecao){
-                case 1:
-                    direcao = "up";
-                    break;
-                case 2:
-                    direcao = "down";
-                    break;
-                case 3:
-                    direcao = "right";
-                    break;
-                case 4:
-                    direcao = "left";
-                    break;
-                default:
-                    System.out.println("Código de direção Inválido!");
-                    return;
-        }
-        this.mover(direcao);//execcutar a logica do mover anterior com a exceção
-    }
     public boolean encontrouAlimento(int alimentoX, int alimentoY){
         return this.posicaoX == alimentoX && this.posicaoY == alimentoY;
     }
+    
     @Override
     public String toString() {
-        // Formato (X, Y)
-        return "Robô " + cor + " na posição (" + posicaoX + ", " + posicaoY + ")"; 
+        return cor + " (" + posicaoX + ", " + posicaoY + ")"; 
     }
 }
