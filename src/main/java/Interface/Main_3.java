@@ -4,11 +4,12 @@
  */
 package Interface;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 import Logica.Robo;
 import Logica.RoboInteligente;
 import excecao.MovimentoInvalidoException;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 /**
  *
@@ -41,7 +42,7 @@ public class Main_3 {
         for (int y = AREA_LADO - 1; y >= 0; y--) { // Desenha de cima para baixo
             System.out.print(y + " | ");
             for (int x = 0; x < AREA_LADO; x++) {
-                String simbolo = " ";
+                String simbolo = "*";
                 
                 boolean r1 = (x == robo1.getPosicaoX() && y == robo1.getPosicaoY());
                 boolean r2 = (x == robo2.getPosicaoX() && y == robo2.getPosicaoY());

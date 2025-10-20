@@ -15,14 +15,23 @@ public class Robo {
     private int posicaoX;
     private int posicaoY;
     private String cor;
+    private boolean ativo;
     
-    // Variável que armazena o código do último movimento VÁLIDO.
     protected int ultimoMovimentoValido = 0; 
     
     public Robo(String cor){
         this.cor = cor;
         this.posicaoX = 0;
         this.posicaoY = 0;
+        this.ativo = true;
+    }
+
+    public boolean isAtivo(){
+        return ativo;
+    }
+
+    public void explodir(){
+        this.ativo = false;
     }
     
     public String getCor(){
@@ -37,13 +46,24 @@ public class Robo {
         return posicaoY;
     }
     
-    // Método auxiliar para gerar um código de direção randômico (1 a 4)
+    public void setPosicaoX(int novaPosicaoX) throws MovimentoInvalidoException {
+        if(novaPosicaoX < 0 || novaPosicaoX >= TAMANHO_AREA){
+            throw new MovimentoInvalidoException("Tentativa de Inválida para X = " + novaPosicaoX + " (fora da área 0-" + (TAMANHO_AREA-1) + ").");
+        }
+        this.posicaoX = novaPosicaoX;
+    }
+    
+    public void setPosicaoY(int novaPosicaoY) throws MovimentoInvalidoException {
+        if(novaPosicaoY < 0 || novaPosicaoY >= TAMANHO_AREA){
+            throw new MovimentoInvalidoException("Tentativa de Inválida para Y = " + novaPosicaoY + " (fora da área 0-" + (TAMANHO_AREA-1) + ").");
+        }
+        this.posicaoY = novaPosicaoY;
+    }
     public int gerarMovimentoRandomico() {
         // Gera um número entre 1 e 4 (Up:1, Down:2, Right:3, Left:4)
         return (int) (Math.random() * 4) + 1;
     }
     
-    // Converte o código da direção para String (útil para logs na Main)
     public String codigoParaDirecao(int codigoDirecao) {
         switch(codigoDirecao) {
             case 1: return "up";
@@ -55,6 +75,10 @@ public class Robo {
     }
 
     public void mover(int codigoDirecao) throws MovimentoInvalidoException{
+        if (!this.ativo){
+            throw new MovimentoInvalidoException("Robo inativo pela Bomba. Não pode se mover.");
+        }
+        
         int novoX = this.posicaoX;
         int novoY = this.posicaoY;
         
@@ -75,8 +99,7 @@ public class Robo {
                 throw new MovimentoInvalidoException("Código de direção Inválido! (Use 1 a 4)");
         }
         
-        // Verificação dos limites da área (0 a 3)
-        // Se a nova posição for < 0 OU >= TAMANHO_AREA (4), lança exceção.
+        // Validação de Limites
         if(novoX < 0 || novoX >= TAMANHO_AREA){
             throw new MovimentoInvalidoException("Movimento para X = " + novoX + " fora da área (0-" + (TAMANHO_AREA-1) + ").");
         }
@@ -84,7 +107,6 @@ public class Robo {
             throw new MovimentoInvalidoException("Movimento para Y = " + novoY + " fora da área (0-" + (TAMANHO_AREA-1) + ").");
         }
         
-        // Se chegou aqui, o movimento é válido
         this.posicaoX = novoX;
         this.posicaoY = novoY;
         this.ultimoMovimentoValido = codigoDirecao;
