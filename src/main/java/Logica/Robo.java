@@ -52,49 +52,59 @@ public class Robo {
         
         switch(direcao.toLowerCase()){
             case "up":
-                novoY++;
+                novoY--;
                 break;
             case "down":
-                novoY--;
+                novoY++;
                 break;
             case "right":
                 novoX++;
                 break;
             case "left":
                 novoX--;
+                break;
             default:
                 System.out.println("Direção do movimento Inválida!");
                 return;
         }
+        
         if(novoX < 0){
             throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoX + ".");
+        } else if (novoX > 3) {
+            throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoX + ".");
         }
+        
         if(novoY < 0){
             throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoY + ".");
+        } else if (novoY > 3) {
+            throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoY + ".");
         }
+        
         this.posicaoX = novoX;
         this.posicaoY = novoY;
         System.out.println("Movimento '" + direcao + "' realizado. Robô " + this.cor + " na posição (" + this.posicaoX + ", " + this.posicaoY + ")");
     }
     
     public void mover(int codigoDirecao) throws MovimentoInvalidoException{
-            String direcao = "";
-            switch(codigoDirecao){
-                case 1:
-                    direcao = "up";
-                    break;
-                case 2:
-                    direcao = "down";
-                    break;
-                case 3:
-                    direcao = "right";
-                    break;
-                case 4:
-                    direcao = "left";
-                    break;
-                default:
-                    System.out.println("Código de direção Inválido!");
-                    return;
+        
+        String direcao = "";
+        
+        switch(codigoDirecao){
+            case 1:
+                direcao = "up";
+                break;
+            case 2:
+                direcao = "down";
+                break;
+            case 3:
+                direcao = "right";
+                break;
+            case 4:
+                direcao = "left";
+                break;
+            default:
+                System.out.println("Código de direção Inválido!");
+                return;
         }
         this.mover(direcao);//execcutar a logica do mover anterior com a exceção
     }
