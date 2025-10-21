@@ -7,6 +7,9 @@ package Interface.TelaJogo;
 import java.awt.Color;
 import java.awt.Graphics;
 import Logica.Robo; // Importe sua classe Robo
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import java.net.URL;
 
 // ---- 1. ATRIBUTOS PARA GUARDAR O ESTADO DO JOGO ----
 // Precisamos de referências para o robô e o alimento
@@ -17,6 +20,9 @@ public class TabuleiroPanel extends javax.swing.JPanel {
     private Robo roboParaDesenhar;
     private int xAlimento;
     private int yAlimento;
+    private Image roboImagem;
+    private Image frutaImagem;
+    private Image backgroundImagem;
 
 // Defina o tamanho da sua área e de cada "célula" do grid
     private final int GRID_TAMANHO = 4; // Seu trabalho especifica 4 unidades de lado
@@ -36,33 +42,22 @@ public class TabuleiroPanel extends javax.swing.JPanel {
 // Este é o método principal de desenho.
     @Override
     protected void paintComponent(Graphics g) {
-        // 1. super.paintComponent(g);
+        // super.paintComponent(g);
         // Esta é a primeira coisa a se fazer. Limpa o painel antes de desenhar.
         super.paintComponent(g);
-
-        // 2. Desenhar o Alimento (Ex: um quadrado verde)
-        g.setColor(Color.GREEN);
-        g.fillRect(
-                xAlimento * CELULA_TAMANHO_PIXELS, // Posição X
-                yAlimento * CELULA_TAMANHO_PIXELS, // Posição Y
-                CELULA_TAMANHO_PIXELS, // Largura
-                CELULA_TAMANHO_PIXELS // Altura
-        );
-
-        // 3. Desenhar o Robô (Ex: um círculo azul)
-        // Só desenha se o robô já foi inicializado
-        if (roboParaDesenhar != null) {
-            g.setColor(Color.BLUE); // Você pode mudar isso para usar a "cor" do seu robô
-            g.fillOval(
-                    roboParaDesenhar.getPosicaoX() * CELULA_TAMANHO_PIXELS, // Posição X
-                    roboParaDesenhar.getPosicaoY() * CELULA_TAMANHO_PIXELS, // Posição Y
-                    CELULA_TAMANHO_PIXELS, // Largura
-                    CELULA_TAMANHO_PIXELS // Altura
-            );
+        
+        // Desenha o background
+        if (backgroundImagem != null) {
+            g.drawImage(backgroundImagem, 
+                    0, 
+                    0, 
+                    PAINEL_TAMANHO_PIXELS,
+                    PAINEL_TAMANHO_PIXELS,
+                    this);
         }
         
-        // 4. Desenhar a Grade 4x4
-        g.setColor(Color.BLACK); // Cor da grade
+        // Desenhar a Grade 4x4
+        g.setColor(Color.GRAY); // Cor da grade
         for (int i = 0; i <= GRID_TAMANHO; i++) {
             // Linhas verticais
             g.drawLine(
@@ -80,10 +75,53 @@ public class TabuleiroPanel extends javax.swing.JPanel {
                     i * CELULA_TAMANHO_PIXELS // y2
             );
         }
+        
+        // Desenhar o Alimento
+        if (frutaImagem != null) {
+            g.drawImage(frutaImagem, 
+                    xAlimento * CELULA_TAMANHO_PIXELS, 
+                    yAlimento * CELULA_TAMANHO_PIXELS, 
+                    CELULA_TAMANHO_PIXELS, 
+                    CELULA_TAMANHO_PIXELS, 
+                    this);
+        }
+
+        // 3. Desenhar o Robô
+        // Só desenha se o robô já foi inicializado
+        if (roboParaDesenhar != null && roboImagem != null) {
+            g.drawImage(roboImagem, 
+                    roboParaDesenhar.getPosicaoX() * CELULA_TAMANHO_PIXELS, // Posição X
+                    roboParaDesenhar.getPosicaoY() * CELULA_TAMANHO_PIXELS, // Posição Y
+                    CELULA_TAMANHO_PIXELS, // Largura
+                    CELULA_TAMANHO_PIXELS, // Altura
+                    this);
+        }
     }
 
     public TabuleiroPanel() {
         initComponents();
+        carregarImagens();
+    }
+    
+    private void carregarImagens() {
+        try {
+            // Este caminho usa o nome do pacote que você criou
+            URL roboUrl = getClass().getResource("/images/Robo-Azul.png");
+            URL frutaUrl = getClass().getResource("/images/Fruta.png");
+            URL backgroundUrl = getClass().getResource("/images/Background-Grama.jpg");
+            
+            if (roboUrl == null || frutaUrl == null || backgroundUrl == null) {
+                System.err.println("Não foi possível encontrar as imagens!");
+            } else {
+                roboImagem = new ImageIcon(roboUrl).getImage();
+                frutaImagem = new ImageIcon(frutaUrl).getImage();
+                backgroundImagem = new ImageIcon(backgroundUrl).getImage();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Erro ao carregar imagens: " + e.getMessage());
+        }
     }
 
     /**

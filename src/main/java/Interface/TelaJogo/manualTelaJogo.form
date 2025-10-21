@@ -167,12 +167,10 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Component id="posicaoYField" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="jButton5" max="32767" attributes="0"/>
-                          <Component id="jLabelY" max="32767" attributes="0"/>
-                          <Component id="jLabelX" min="-2" max="-2" attributes="0"/>
-                          <Component id="posicaoXField" alignment="1" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="jButton5" max="32767" attributes="0"/>
+                      <Component id="jLabelY" max="32767" attributes="0"/>
+                      <Component id="jLabelX" min="-2" max="-2" attributes="0"/>
+                      <Component id="posicaoXField" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
               </Group>

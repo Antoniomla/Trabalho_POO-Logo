@@ -21,6 +21,28 @@ public class manualTelaJogo extends javax.swing.JFrame {
     private int xAlimento = 0; // Exemplo: alimento em (3, 2)
     private int yAlimento = 0;
     
+    private void resetarParaInicio() {
+        // 1. Mostra a tela de configuração e limpa os campos
+        telaPosicaoAlimento.setVisible(true);
+        posicaoXField.setText(""); // Limpa o campo X
+        posicaoYField.setText(""); // Limpa o campo Y
+        
+        // 2. Oculta e desabilita os botões de movimento
+        jButton1.setEnabled(false);
+        jButton1.setVisible(false);
+        
+        jButton2.setEnabled(false);
+        jButton2.setVisible(false);
+        
+        jButton3.setEnabled(false);
+        jButton3.setVisible(false);
+        
+        jButton4.setEnabled(false);
+        jButton4.setVisible(false);
+        
+        // 3. Oculta o painel do jogo
+        painelDoJogo.setVisible(false);
+    }
     
     private void atualizarAposMovimento() {
         // 1. Atualiza o painel com os novos dados
@@ -45,6 +67,25 @@ public class manualTelaJogo extends javax.swing.JFrame {
             jButton2.setEnabled(false); // Botão "Left"
             jButton3.setEnabled(false); // Botão "Down"
             jButton4.setEnabled(false); // Botão "Right"
+            
+            // 3c. Perguntar se quer jogar novamente
+            Object[] options = {"Jogar Novamente", "Sair"};
+            int escolha = JOptionPane.showOptionDialog(this,
+                "Deseja jogar novamente?",
+                "Fim de Jogo",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     // sem ícone customizado
+                options,  // os botões que definimos
+                options[0]); // botão padrão
+            
+            if (escolha == 0) { // 0 é o primeiro botão: "Jogar Novamente"
+                // Reseta o jogo para a tela de input
+                resetarParaInicio(); 
+            } else {
+                // Se for 1 ("Sair") ou se o usuário fechar a janela
+                System.exit(0); // Fecha a aplicação
+            }
         }
     }
     
@@ -52,19 +93,7 @@ public class manualTelaJogo extends javax.swing.JFrame {
         initComponents();
         
         // Oculta e desabilitar os botões para andar e o painel
-        jButton1.setEnabled(false);
-        jButton1.setVisible(false);
-        
-        jButton2.setEnabled(false);
-        jButton2.setVisible(false);
-        
-        jButton3.setEnabled(false);
-        jButton3.setVisible(false);
-        
-        jButton4.setEnabled(false);
-        jButton4.setVisible(false);
-        
-        painelDoJogo.setVisible(false);
+        resetarParaInicio();
     }
 
     /**
@@ -251,10 +280,6 @@ public class manualTelaJogo extends javax.swing.JFrame {
             System.out.println(e.getMessage());
             return;
         }
-    
-        // Atualiza o painel com os novos dados
-        TabuleiroPanel meuPainel = (TabuleiroPanel) painelDoJogo; 
-        meuPainel.atualizarEstado(meuRobo, xAlimento, yAlimento);
 
         // Manda redesenhar!
         atualizarAposMovimento();
@@ -268,9 +293,6 @@ public class manualTelaJogo extends javax.swing.JFrame {
             return;
         }
         
-        TabuleiroPanel meuPainel = (TabuleiroPanel) painelDoJogo;
-        meuPainel.atualizarEstado(meuRobo, xAlimento, yAlimento);
-        
         atualizarAposMovimento();
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -281,9 +303,6 @@ public class manualTelaJogo extends javax.swing.JFrame {
             System.out.println(e.getMessage());
             return;
         }
-        
-        TabuleiroPanel meuPainel = (TabuleiroPanel) painelDoJogo;
-        meuPainel.atualizarEstado(meuRobo, xAlimento, yAlimento);
         
         atualizarAposMovimento();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -296,14 +315,11 @@ public class manualTelaJogo extends javax.swing.JFrame {
             return;
         }
         
-        TabuleiroPanel meuPainel = (TabuleiroPanel) painelDoJogo;
-        meuPainel.atualizarEstado(meuRobo, xAlimento, yAlimento);
-        
         atualizarAposMovimento();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void posicaoXFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_posicaoXFieldActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_posicaoXFieldActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -362,7 +378,7 @@ public class manualTelaJogo extends javax.swing.JFrame {
 
     /**
      * @param args the command line arguments
-     */
+     */ 
     public static void main(String args[]) {
     /* Set the Nimbus look and feel */
     //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
