@@ -11,7 +11,6 @@ public class Robo {
     
     protected int ultimoMovimentoValido = 0; 
 
-    // 🟩 Novos atributos para contar os movimentos
     private int movimentosValidos = 0;
     private int movimentosInvalidos = 0;
     
