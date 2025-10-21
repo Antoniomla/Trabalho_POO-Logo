@@ -1,14 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Logica;
 import excecao.MovimentoInvalidoException;
 
-/**
- *
- * @author Antônio Carlos
- */
 public class Robo {
     public static final int TAMANHO_AREA = 4;
     

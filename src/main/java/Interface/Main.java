@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package Interface;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -10,11 +6,6 @@ import Logica.Robo;
 import excecao.MovimentoInvalidoException;
 
 
-/**
- *
- *
- * @author Antônio Carlos
- */
 public class Main {
     
     private static int obterCoordenada(Scanner sc , String eixo){
@@ -29,7 +20,8 @@ public class Main {
             }catch(InputMismatchException e){
                 // verifica se o usuario vai digitar um inteiro
                 System.out.println("ERRO:Entrada Invalida.Digite um número inteiro.");
-                sc.nextInt();
+                sc.nextLine();  //sc.nextInt() vai fazer o programa tentar ler outro numero imediatamente
+                                //sc.nextLine() vai descartar a entrada errada
             }
         }
         return coord;
