@@ -98,8 +98,7 @@ public class Robo {
             default:
                 throw new MovimentoInvalidoException("Código de direção Inválido! (Use 1 a 4)");
         }
-        
-        // Validação de Limites
+       
         if(novoX < 0 || novoX >= TAMANHO_AREA){
             throw new MovimentoInvalidoException("Movimento para X = " + novoX + " fora da área (0-" + (TAMANHO_AREA-1) + ").");
         }
