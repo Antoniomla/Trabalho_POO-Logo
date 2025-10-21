@@ -10,6 +10,10 @@ public class Robo {
     private boolean ativo;
     
     protected int ultimoMovimentoValido = 0; 
+
+    // 🟩 Novos atributos para contar os movimentos
+    private int movimentosValidos = 0;
+    private int movimentosInvalidos = 0;
     
     public Robo(String cor){
         this.cor = cor;
@@ -38,6 +42,14 @@ public class Robo {
         return posicaoY;
     }
     
+    public int getMovimentosValidos() {
+        return movimentosValidos;
+    }
+
+    public int getMovimentosInvalidos() {
+        return movimentosInvalidos;
+    }
+
     public void setPosicaoX(int novaPosicaoX) throws MovimentoInvalidoException {
         if(novaPosicaoX < 0 || novaPosicaoX >= TAMANHO_AREA){
             throw new MovimentoInvalidoException("Tentativa de Inválida para X = " + novaPosicaoX + " (fora da área 0-" + (TAMANHO_AREA-1) + ").");
@@ -51,6 +63,7 @@ public class Robo {
         }
         this.posicaoY = novaPosicaoY;
     }
+
     public int gerarMovimentoRandomico() {
         // Gera um número entre 1 e 4 (Up:1, Down:2, Right:3, Left:4)
         return (int) (Math.random() * 4) + 1;
@@ -88,20 +101,21 @@ public class Robo {
                 novoX--;
                 break;
             default:
+                movimentosInvalidos++; // ❌ Direção inválida
                 throw new MovimentoInvalidoException("Código de direção Inválido! (Use 1 a 4)");
         }
         
         // Validação de Limites
-        if(novoX < 0 || novoX >= TAMANHO_AREA){
-            throw new MovimentoInvalidoException("Movimento para X = " + novoX + " fora da área (0-" + (TAMANHO_AREA-1) + ").");
+        if(novoX < 0 || novoX >= TAMANHO_AREA || novoY < 0 || novoY >= TAMANHO_AREA){
+            movimentosInvalidos++; // ❌ Fora da área
+            throw new MovimentoInvalidoException("Movimento fora da área (0-" + (TAMANHO_AREA-1) + ").");
         }
-        if(novoY < 0 || novoY >= TAMANHO_AREA){
-            throw new MovimentoInvalidoException("Movimento para Y = " + novoY + " fora da área (0-" + (TAMANHO_AREA-1) + ").");
-        }
-        
+
+        // ✅ Movimento válido
         this.posicaoX = novoX;
         this.posicaoY = novoY;
         this.ultimoMovimentoValido = codigoDirecao;
+        this.movimentosValidos++;
     }
     
     public boolean encontrouAlimento(int alimentoX, int alimentoY){
