@@ -1,18 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package Interface;
-import excecao.MovimentoInvalidoException;
-import Logica.Robo;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import Logica.Robo;
+import excecao.MovimentoInvalidoException;
 
-/**
- *
- * @author Antônio Carlos
- */
+
 public class Main {
     
     private static int obterCoordenada(Scanner sc , String eixo){
@@ -27,7 +20,8 @@ public class Main {
             }catch(InputMismatchException e){
                 // verifica se o usuario vai digitar um inteiro
                 System.out.println("ERRO:Entrada Invalida.Digite um número inteiro.");
-                sc.nextInt();
+                sc.nextLine();  //sc.nextInt() vai fazer o programa tentar ler outro numero imediatamente
+                                //sc.nextLine() vai descartar a entrada errada
             }
         }
         return coord;
@@ -43,10 +37,15 @@ public class Main {
         System.out.println("==========================================");
         System.out.println("Robo " + meuRobo.getCor() + " iniciado na posicao (0 , 0).");
         System.out.println("\nCONFIGURACAO DO ALIMENTO");
-        alimentoX = obterCoordenada(sc, "X");
-        alimentoY = obterCoordenada(sc, "Y");
-        System.out.printf("Alimento posicionado em: (%d, %d)\n", alimentoX, alimentoY);
-        System.out.println("\nJOGO INICIADO COM SUCESSO!");
+        do {
+            alimentoX = obterCoordenada(sc, "X");
+            alimentoY = obterCoordenada(sc, "Y");
+            if (alimentoX >= Robo.TAMANHO_AREA || alimentoY >= Robo.TAMANHO_AREA) {
+                System.out.println("ERRO: As coordenadas devem estar dentro da area de locomoção do robo (0 a " + (Robo.TAMANHO_AREA - 1) + "). Tente Novamente.");
+            }
+        } while (alimentoX < 0 || alimentoY < 0 || alimentoX >= Robo.TAMANHO_AREA || alimentoY >= Robo.TAMANHO_AREA);
+            System.out.printf("Alimento posicionado em: (%d, %d)\n", alimentoX, alimentoY);
+            System.out.println("\nJOGO INICIADO COM SUCESSO!");
         
         while (!meuRobo.encontrouAlimento(alimentoX, alimentoY)) {
             System.out.println("------------------------------------------");

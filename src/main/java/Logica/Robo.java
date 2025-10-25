@@ -1,23 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Logica;
 import excecao.MovimentoInvalidoException;
 
-/**
- *
- * @author Antônio Carlos
- */
 public class Robo {
+    public static final int TAMANHO_AREA = 4;
+    
     private int posicaoX;
     private int posicaoY;
     private String cor;
+    private boolean ativo;
+    
+    protected int ultimoMovimentoValido = 0; 
+
+    private int movimentosValidos = 0;
+    private int movimentosInvalidos = 0;
     
     public Robo(String cor){
         this.cor = cor;
         this.posicaoX = 0;
         this.posicaoY = 0;
+        this.ativo = true;
+    }
+
+    public boolean isAtivo(){
+        return ativo;
+    }
+
+    public void explodir(){
+        this.ativo = false;
     }
     
     public String getCor(){
@@ -32,88 +41,79 @@ public class Robo {
         return posicaoY;
     }
     
-    public void setPosicaoX(int novaPosicaoX) throws MovimentoInvalidoException{
-        if(novaPosicaoX < 0){
-            throw new MovimentoInvalidoException("Tentativa de Locomoção Inválida, pelo robô " + this.cor + "para X = " + novaPosicaoX + " ,(coordenada negativa!)");
+    public void setPosicaoX(int novaPosicaoX) throws MovimentoInvalidoException {
+        if(novaPosicaoX < 0 || novaPosicaoX >= TAMANHO_AREA){
+            throw new MovimentoInvalidoException("Tentativa de Inválida para X = " + novaPosicaoX + " (fora da área 0-" + (TAMANHO_AREA-1) + ").");
         }
         this.posicaoX = novaPosicaoX;
     }
     
-    public void setPosicaoY(int novaPosicaoY) throws MovimentoInvalidoException{
-        if(novaPosicaoY < 0){
-            throw new MovimentoInvalidoException("Tentativa de Locomoção Inválida, pelo robô "+ this.cor + "para Y = " + novaPosicaoY + " ,(coordenada negativa!)");
+    public void setPosicaoY(int novaPosicaoY) throws MovimentoInvalidoException {
+        if(novaPosicaoY < 0 || novaPosicaoY >= TAMANHO_AREA){
+            throw new MovimentoInvalidoException("Tentativa de Inválida para Y = " + novaPosicaoY + " (fora da área 0-" + (TAMANHO_AREA-1) + ").");
         }
         this.posicaoY = novaPosicaoY;
     }
+    public int gerarMovimentoRandomico() {
+        // Gera um número entre 1 e 4 (Up:1, Down:2, Right:3, Left:4)
+        return (int) (Math.random() * 4) + 1;
+    }
     
-    public void mover(String direcao) throws MovimentoInvalidoException{
+    public String codigoParaDirecao(int codigoDirecao) {
+        switch(codigoDirecao) {
+            case 1: return "up";
+            case 2: return "down";
+            case 3: return "right";
+            case 4: return "left";
+            default: return "INVALIDO";
+        }
+    }
+
+    public void mover(int codigoDirecao) throws MovimentoInvalidoException{
+        if (!this.ativo){
+            throw new MovimentoInvalidoException("Robo inativo pela Bomba. Não pode se mover.");
+        }
+        
         int novoX = this.posicaoX;
         int novoY = this.posicaoY;
         
-        switch(direcao.toLowerCase()){
-            case "up":
+        switch(codigoDirecao){
+            case 1: // up
                 novoY--;
                 break;
-            case "down":
+            case 2: // down
                 novoY++;
                 break;
-            case "right":
+            case 3: // right
                 novoX++;
                 break;
-            case "left":
+            case 4: // left
                 novoX--;
                 break;
             default:
-                System.out.println("Direção do movimento Inválida!");
-                return;
+                movimentosInvalidos++; // ❌ Direção inválida
+                throw new MovimentoInvalidoException("Código de direção Inválido! (Use 1 a 4)");
         }
         
-        if(novoX < 0){
-            throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoX + ".");
-        } else if (novoX > 3) {
-            throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoX + ".");
+        // Validação de Limites
+        if(novoX < 0 || novoX >= TAMANHO_AREA || novoY < 0 || novoY >= TAMANHO_AREA){
+            movimentosInvalidos++; // ❌ Fora da área
+            throw new MovimentoInvalidoException("Movimento fora da área (0-" + (TAMANHO_AREA-1) + ").");
         }
-        
-        if(novoY < 0){
-            throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoY + ".");
-        } else if (novoY > 3) {
-            throw new MovimentoInvalidoException("O robô " + this.cor + " não pode se mover para X = " + novoY + ".");
-        }
-        
+
+        // ✅ Movimento válido
         this.posicaoX = novoX;
         this.posicaoY = novoY;
-        System.out.println("Movimento '" + direcao + "' realizado. Robô " + this.cor + " na posição (" + this.posicaoX + ", " + this.posicaoY + ")");
+        this.ultimoMovimentoValido = codigoDirecao;
+        this.movimentosValidos++;
     }
-    
-    public void mover(int codigoDirecao) throws MovimentoInvalidoException{
-        
-        String direcao = "";
-        
-        switch(codigoDirecao){
-            case 1:
-                direcao = "up";
-                break;
-            case 2:
-                direcao = "down";
-                break;
-            case 3:
-                direcao = "right";
-                break;
-            case 4:
-                direcao = "left";
-                break;
-            default:
-                System.out.println("Código de direção Inválido!");
-                return;
-        }
-        this.mover(direcao);//execcutar a logica do mover anterior com a exceção
-    }
+
     public boolean encontrouAlimento(int alimentoX, int alimentoY){
         return this.posicaoX == alimentoX && this.posicaoY == alimentoY;
     }
+    
     @Override
     public String toString() {
-        // Formato (X, Y)
-        return "Robô " + cor + " na posição (" + posicaoX + ", " + posicaoY + ")"; 
+        return cor + " (" + posicaoX + ", " + posicaoY + ")"; 
     }
 }

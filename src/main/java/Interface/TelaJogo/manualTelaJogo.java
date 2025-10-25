@@ -275,7 +275,7 @@ public class manualTelaJogo extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            meuRobo.mover("up");
+            meuRobo.mover(1);
         } catch (excecao.MovimentoInvalidoException e) {
             System.out.println(e.getMessage());
             return;
@@ -287,7 +287,7 @@ public class manualTelaJogo extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            meuRobo.mover("down");
+            meuRobo.mover(2);
         } catch (excecao.MovimentoInvalidoException e) {
             System.out.println(e.getMessage());
             return;
@@ -298,7 +298,7 @@ public class manualTelaJogo extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            meuRobo.mover("left");
+            meuRobo.mover(4);
         } catch (excecao.MovimentoInvalidoException e) {
             System.out.println(e.getMessage());
             return;
@@ -309,7 +309,7 @@ public class manualTelaJogo extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
-            meuRobo.mover("right");
+            meuRobo.mover(3);
         } catch (excecao.MovimentoInvalidoException e) {
             System.out.println(e.getMessage());
             return;
